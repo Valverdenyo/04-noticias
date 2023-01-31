@@ -27,3 +27,10 @@ export enum ID {
 export enum Name {
     TechCrunch = "TechCrunch",
 }
+
+export interface ArticlesByCategoryAndPage {
+[key: string] : {
+    page: number,
+    articles: Article[]
+}
+}
