@@ -11,26 +11,19 @@ export interface Article {
     description?: string;
     url:          string;
     urlToImage?:  string;
-    publishedAt:  Date;
+    publishedAt:  string;
     content?:     string;
 }
 
 export interface Source {
-    id?:   ID;
-    name:  Name;
+    id?:  string;
+    name: string;
 }
 
-export enum ID {
-    Techcrunch = "techcrunch",
-}
-
-export enum Name {
-    TechCrunch = "TechCrunch",
-}
 
 export interface ArticlesByCategoryAndPage {
-[key: string] : {
-    page: number,
-    articles: Article[]
-}
+    [key: string] : {
+        page: number,
+        articles: Article[]
+    }
 }
