@@ -18,7 +18,8 @@ export class ArticleComponent {
     private platform: Platform,
     private actionSheetCtrl: ActionSheetController,
     private socialSharing: SocialSharing,
-    private storageService: StorageService) { }
+    private storageService: StorageService
+  ) { }
 
   async onOpenMenu() {
 
@@ -30,15 +31,16 @@ export class ArticleComponent {
         text: 'Compartir',
         icon: 'share-outline',
         handler: () => {
+
           this.onShareArticle();
         }
       }, {
         text: articleInFavorite ? 'Quitar Favorito' : 'Favorito',
-        icon:  articleInFavorite ? 'heart' : 'heart-outline',
+        icon: articleInFavorite ? 'heart' : 'heart-outline',
         handler: () => {
           this.onToggleFavorite();
         }
-      },{
+      }, {
         text: 'Cancelar',
         icon: 'close-outline',
         role: 'cancel',
@@ -62,16 +64,36 @@ export class ArticleComponent {
   }
 
   onShareArticle() {
-    this.socialSharing.share(
-      this.article.title,
-      this.article.source.name,
-      
-      this.article.url
-    );
+
+    if (this.platform.is('cordova')) {
+
+
+      this.compartirNoticia();
+      this.socialSharing.share(
+        this.article.title,
+        this.article.source.name,
+
+        this.article.url
+      );
+    } else {
+      if (navigator.share) {
+        navigator.share({
+          title: this.article.title,
+          text: this.article.description,
+          url: this.article.url,
+        })
+          .then(() => console.log('Compartido!'))
+          .catch((error) => console.log('Error compartiendo', error));
+      }
+    }
   }
 
   onToggleFavorite() {
     this.storageService.setRemoveArticle(this.article);
+  }
+
+  compartirNoticia() {
+
   }
 
 }
